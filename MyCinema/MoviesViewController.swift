@@ -10,11 +10,17 @@ class MoviesViewController: UIViewController {
     
     private let tableView = UITableView()
     
-    private let movies: [Movie] = [
+    private let trendMovies: [Movie] = [
+        Movie(title: "The drama", imageName: "drama_poster"),
         Movie(title: "Dune", imageName: "dune_poster"),
-        Movie(title: "Michael", imageName: "michael_poster"),
-        Movie(title: "Jurasic World", imageName: "jurasic_world_poster")
+        Movie(title: "Wuthering Heights", imageName: "wuthering_heights_poster")
     ]
+    
+    private let regularMovies: [Movie] = [
+        Movie(title: "Michael", imageName: "michael_poster"),
+        Movie(title: "The housemaid", imageName: "housemaid_poster"),
+        Movie(title: "The devil wears Prada", imageName: "devil_poster")
+        ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,10 +37,12 @@ class MoviesViewController: UIViewController {
         tableView.dataSource = self
         
         tableView.register(MovieCell.self, forCellReuseIdentifier: MovieCell.identifier)
+        tableView.register(CarouselTableCell.self, forCellReuseIdentifier: CarouselTableCell.identifier)
         
         tableView.separatorStyle = .none
         
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -45,17 +53,36 @@ class MoviesViewController: UIViewController {
 }
 
 extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section == 0 ? "В тренде" : "Все фильмы"
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        movies.count
+        if section == 0 {
+            return 1
+        } else {
+            return regularMovies.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
-            return UITableViewCell()
+        if indexPath.section == 0 {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: CarouselTableCell.identifier, for: indexPath) as? CarouselTableCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: trendMovies)
+            return cell
+        } else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
+                return UITableViewCell()
+            }
+            cell.configure(with: regularMovies[indexPath.row])
+            return cell
         }
-        
-        let movie = movies[indexPath.row]
-        cell.configure(with: movie)
-        return cell
     }
 }

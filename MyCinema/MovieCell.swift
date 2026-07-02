@@ -26,9 +26,10 @@ class MovieCell: UITableViewCell {
         let button = UIButton(type: .system)
         button.setTitle("Details", for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .semibold)
-        button.backgroundColor = .systemRed
-        button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = 10
+        button.backgroundColor = .label
+        button.setTitleColor(.systemBackground, for: .normal)
+        button.layer.cornerRadius = 22
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -63,7 +64,7 @@ class MovieCell: UITableViewCell {
             titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
-            detailsButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 12),
+            detailsButton.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
             detailsButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             detailsButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             
