@@ -6,6 +6,8 @@ class CarouselTableCell: UITableViewCell {
     
     private var carouselMovies: [Movie] = []
     
+    var onMovieSelected: ((Movie) -> Void)?
+    
     private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -61,7 +63,13 @@ extension CarouselTableCell: UICollectionViewDelegate, UICollectionViewDataSourc
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MovieCollectionCell.identifier, for: indexPath) as? MovieCollectionCell else {
             return UICollectionViewCell()
         }
-        cell.configure(with: carouselMovies[indexPath.item])
+        
+        let currentMovie = carouselMovies[indexPath.item]
+            cell.configure(with: currentMovie)
+        
+        cell.onDetailsButtonTapped = { [weak self] in
+            self?.onMovieSelected?(currentMovie)
+        }
         return cell
     }
 }

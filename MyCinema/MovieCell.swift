@@ -4,6 +4,7 @@ import UIKit
 class MovieCell: UITableViewCell {
 
     static let identifier: String = "MovieCell"
+    var onDetailsButtonTapped: (() -> Void)?
     
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
@@ -31,8 +32,15 @@ class MovieCell: UITableViewCell {
         button.layer.cornerRadius = 22
         
         button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
         return button
     }()
+    
+    @objc private func buttonTapped(){
+        onDetailsButtonTapped?()
+    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?){
         super.init(style: style, reuseIdentifier: reuseIdentifier)

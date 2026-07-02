@@ -75,13 +75,29 @@ extension MoviesViewController: UITableViewDelegate, UITableViewDataSource {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: CarouselTableCell.identifier, for: indexPath) as? CarouselTableCell else {
                 return UITableViewCell()
             }
+            
             cell.configure(with: trendMovies)
+            
+            cell.onMovieSelected = { [weak self] selectedMovie in
+
+                let detailVC = MovieDetailsViewController(movie: selectedMovie)
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
             return cell
+            
+            
         } else {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: MovieCell.identifier, for: indexPath) as? MovieCell else {
                 return UITableViewCell()
             }
-            cell.configure(with: regularMovies[indexPath.row])
+            let currentMovie = regularMovies[indexPath.row]
+            cell.configure(with: currentMovie)
+                        
+            cell.onDetailsButtonTapped = { [weak self] in
+                            
+                let detailVC = MovieDetailsViewController(movie: currentMovie)
+                self?.navigationController?.pushViewController(detailVC, animated: true)
+            }
             return cell
         }
     }

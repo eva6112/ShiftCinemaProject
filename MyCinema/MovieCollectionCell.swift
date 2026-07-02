@@ -2,7 +2,9 @@
 import UIKit
 
 class MovieCollectionCell: UICollectionViewCell {
+    
     static let identifier = "MovieCollectionCell"
+    var onDetailsButtonTapped: (() -> Void)?
         
     private let posterImageView: UIImageView = {
         let imageView = UIImageView()
@@ -31,8 +33,15 @@ class MovieCollectionCell: UICollectionViewCell {
         button.layer.cornerRadius = 16
             
         button.translatesAutoresizingMaskIntoConstraints = false
+        
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
         return button
         }()
+    
+    @objc private func buttonTapped(){
+        onDetailsButtonTapped?()
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
